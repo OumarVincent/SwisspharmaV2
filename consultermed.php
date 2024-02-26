@@ -14,7 +14,7 @@
 </head>
 <body>
     <?php require(__DIR__ . '/database/database.inc.php');?>
-    <div class="container">
+    <div class="container-fluid">
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
 			<a class="navbar-brand" href="index.php">&nbsp&nbsp Swisspharma</a>
 			<!-- Afficher le nom et prenom de l'utilisateur -->

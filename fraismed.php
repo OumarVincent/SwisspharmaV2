@@ -16,7 +16,7 @@
 
 <body>
 <?php include('fonctions.lib.php'); ?>
-    <div class="container"> <!-- Header-->
+    <div class="container-fluid"> <!-- Header-->
 
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
             <a class="navbar-brand" href="index.php">&nbsp&nbsp Swisspharma</a>

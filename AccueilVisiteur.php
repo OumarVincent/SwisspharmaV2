@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
 
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
             <a class="navbar-brand" href="index.php">&nbsp&nbsp Swisspharma</a>

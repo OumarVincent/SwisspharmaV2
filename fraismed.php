@@ -65,27 +65,24 @@
         </div>
         <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
-        // Vérifier si les champs sont définis et non vides
+        
         if (isset($_POST["repas"]) && isset($_POST["nuitees"]) && isset($_POST["etapes"]) && isset($_POST["km"]) &&
             $_POST["repas"] !== '' && $_POST["nuitees"] !== '' && $_POST["etapes"] !== '' && $_POST["km"] !== '') {
             
-            // Récupérer les valeurs des champs
+            
             $repas = $_POST["repas"];
             $nuitees = $_POST["nuitees"];
             $etapes = $_POST["etapes"];
             $km = $_POST["km"];
-            //créer une fiche frais correspondante
+            
             addFicheFrais($pdo, $_SESSION['matricule'], $_POST['hc-nb']);
-            // Appeler la fonction pour ajouter une ligne de frais forfait à la base de données
             addLigneFraisForfait($pdo, 'REP', $repas);
             addLigneFraisForfait($pdo, 'NUI', $nuitees);
             addLigneFraisForfait($pdo, 'RE', $etapes);
             addLigneFraisForfait($pdo, 'FK', $km);
             
-            // Autres traitements ou redirections si nécessaire
             echo '<div class="alert alert-success" role="alert">Les données ont été enregistrées avec succès.</div>';
         } else {
-            // Gérer le cas où les champs ne sont pas définis, vides ou égaux à l'espace
             echo '<div class="alert alert-danger" role="alert">Veuillez remplir tous les champs obligatoires.</div>';
         }
         
@@ -100,10 +97,9 @@
             // Appeler la fonction pour ajouter une ligne de frais hors-forfait à la base de données
             addLigneFraisHorsForfait($pdo, $_SESSION['matricule'], $hfdate_1, $hfmtn_1 , $hflibelle_1);
             
-            // Autres traitements ou redirections si nécessaire
             echo '<div class="alert alert-success" role="alert">Les frais hors-forfait ont été enregistrés avec succès.</div>';
         } else {
-            // Gérer le cas où les champs ne sont pas définis, vides ou égaux à l'espace
+            // Gérer le cas où les champs n sont pas définis vides ou égaux à l'espace
             echo '<div class="alert alert-danger" role="alert">Veuillez remplir tous les champs obligatoires.</div>';
         }
     } 

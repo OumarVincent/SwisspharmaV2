@@ -137,36 +137,6 @@ function addHorsClassification($base, $matricule, $nbJustificatifs, $libelle) {
     }
 }
 
-function genererUnIdUnique($bdd, $nomTable) {
-    $newId = generateRandomString(4);
 
-    // Utilisation d'une requête préparée pour éviter l'injection SQL
-    $requete = $bdd->prepare("SELECT COUNT(id) AS count FROM $nomTable WHERE id = :newId");
-    $requete->bindParam(':newId', $newId, PDO::PARAM_STR);
-    $requete->execute();
-
-    $resultat = $requete->fetch(PDO::FETCH_ASSOC);
-
-    // Vérifier si l'ID est unique, sinon regénérer
-    while ($resultat['count'] > 0) {
-        $newId = generateRandomString(4);
-        $requete->execute(); // Réexécute la requête avec le nouvel ID
-        $resultat = $requete->fetch(PDO::FETCH_ASSOC);
-    }
-
-    return $newId;
-}
-
-function generateRandomString($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-
-    return $randomString;
-}
 
 ?>

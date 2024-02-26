@@ -95,25 +95,29 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             <div class="col-md-6 offset-md-3">
                 <h2 class="text-center text-dark mt-5">Bienvenue !</h2>
                 <!--<div class="text-center mb-5 text-dark">Connectez vous</div>-->
-                <div class="card my-5">
+                <div class="container my-5">
+    <div class="login-form card">
+        <form action="login.php" method="POST" class="card-body p-lg-5">
 
-                    <form action ="login.php" method="POST" class="card-body cardbody-color p-lg-5">
+            <div class="text-center">
+                <img src="images/LogoSwissPharma.png" class="profile-image img-fluid img-thumbnail rounded-circle my-3" width="200px" alt="profile">
+            </div>
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Nom d'utilisateur">
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Mot de passe">
+            </div>
+            <br>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-5 mb-5 w-100">Connexion</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-                        <div class="text-center">
-                            <img src="images/LogoSwissPharma.png"
-                                class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3" width="200px"
-                                alt="profile">
-                        </div>
-                        <div class="mb-3">
-                        <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="User Name">
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="password">
-                        </div>
-                        <div class="text-center"><button type="submit"
-                                class="btn btn-color px-5 mb-5 w-100">Login</button></div>
-                    </form>
-                </div>
 
             </div>
         </div>

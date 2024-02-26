@@ -4,7 +4,6 @@
 	<meta charset="utf-8">
 	<title>Swisspharma | Déconnexion </title>
 	<link rel="icon" href="../Ressources/Logo.png"/>
-	<!-- css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -19,7 +18,7 @@
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
 			<a class="navbar-brand" href="index.php">&nbsp&nbsp Swisspharma</a>
 
-			<!-- Allow to change the navBar on mobile Devices -->
+			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
 			    <span class="navbar-toggler-icon"></span>
 			</button>
@@ -55,7 +54,7 @@
 
 
 
-		<!-- Hero Section -->
+		
 		<div class="jumbotron">
 			<h1 class="display-3 text-center"> À bientôt !</h1>
 
@@ -63,7 +62,7 @@
 
 
 
-		<!-- Footer -->
+		
 		<footer class="card-body text-center bg-primary mt-2 ">
             <span class=" text-light ">Swisspharma, Copyright &copy; SYLLA Oumar, Mathis Castell, Rasoarisoa
                  Bayrone</span>

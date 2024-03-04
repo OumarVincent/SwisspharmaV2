@@ -15,7 +15,7 @@
 <div class="container-fluid">
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="AccueilComptable.php">Galaxy Swiss Bourdin</a>
+    <a class="navbar-brand" href="AccueilComptable.php">swisspharma</a>
 
 
     <!-- Afficher le nom et prenom de l'utilisateur -->
@@ -31,7 +31,7 @@
 
 
     ?>
-    <!-- Allow to change the navBar on mobile Devices -->
+    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -44,7 +44,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-warning" href="ValiderFicheFraisComptable.php"><strong>Valider les Fiches</strong></a>
+                <a class="nav-link text-warning" href="validerFicheComptable.php"><strong>Valider les Fiches</strong></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-danger" href="Deconnexion.php"><strong>Déconnexion</strong></a>

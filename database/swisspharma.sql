@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 25 fév. 2024 à 23:33
+-- Généré le : lun. 04 mars 2024 à 20:19
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -87,8 +87,9 @@ CREATE TABLE `etat` (
 INSERT INTO `etat` (`id`, `libelle`) VALUES
 ('CL', 'Clôturée'),
 ('CR', 'Fiche créée'),
+('MP', ' mise en paiement'),
 ('RE', 'Remboursée'),
-('VP', 'Validée et mise en paiement');
+('VP', 'Validation');
 
 -- --------------------------------------------------------
 
@@ -132,10 +133,10 @@ CREATE TABLE `fraisforfait` (
 --
 
 INSERT INTO `fraisforfait` (`id`, `libelle`, `montant`) VALUES
-('FK', 'Frais Kilométrique', 0.62),
+('FK', 'Frais Kilométrique', 0.67),
 ('NUI', 'Nuitée', 80.00),
-('RE', 'Relais étape', 110.00),
-('REP', 'Repas Restaurant', 25.00);
+('RE', 'Relais étape', 100.00),
+('REP', 'Repas Restaurant', 29.00);
 
 -- --------------------------------------------------------
 

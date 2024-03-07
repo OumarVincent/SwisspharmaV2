@@ -26,67 +26,52 @@ try {
 
     $_SESSION['periode'] = $datePourRequete;
 
-    // Requête pour la fiche frais.
-    $requete = 'SELECT * 
-                FROM fichefrais 
-                WHERE matricule = \'' . $_SESSION['matricule'] . '\' AND moisAnnee = ' . $datePourRequete;
+// Requête pour la fiche frais.
+$stmtFicheFrais = $pdo->prepare('SELECT * FROM fichefrais WHERE matricule = :matricule AND moisAnnee = :datePourRequete');
+$stmtFicheFrais->execute(['matricule' => $_SESSION['matricule'], 'datePourRequete' => $datePourRequete]);
+$ligne = $stmtFicheFrais->fetch();
 
-    $execution = $pdo->query($requete) or die('La requête a planté !');
-    $ligne = $execution->fetch();
+// Requête pour le libellé de l'état.
+if (isset($ligne['idetat'])) {
+    $stmtEtat = $pdo->prepare('SELECT libelle FROM etat WHERE id = :idetat');
+    $stmtEtat->execute(['idetat' => $ligne['idetat']]);
+    $etat = $stmtEtat->fetch();
+}
 
-    // Requête pour le libellé de l'état.
-    if (isset($ligne['idetat'])) {
-                $requete = 'SELECT libelle 
-                FROM etat 
-                WHERE id = \'' . $ligne['idetat'] . '\'';
-                }
+// Requête optimisée pour récupérer tous les frais forfaitaires en une seule fois.
+$stmtFraisForfait = $pdo->prepare('SELECT * FROM lignefraisforfait WHERE matricule = :matricule AND moisAnnee = :datePourRequete AND idfraisforfait IN (\'RE\', \'FK\', \'NUI\', \'REP\')');
+$stmtFraisForfait->execute(['matricule' => $_SESSION['matricule'], 'datePourRequete' => $datePourRequete]);
+$fraisForfaitaires = $stmtFraisForfait->fetchAll();
 
-    $execution = $pdo->query($requete) or die('La requête a planté !');
-    $etat = $execution->fetch();
+// Traitement des différents frais forfaitaires
+foreach ($fraisForfaitaires as $frais) {
+    switch ($frais['idfraisforfait']) {
+        case 'RE':
+            $forfaitEtape = $frais;
+            break;
+        case 'FK':
+            $fraisKilometrique = $frais;
+            break;
+        case 'NUI':
+            $nuiteeHotel = $frais;
+            break;
+        case 'REP':
+            $repasRestaurant = $frais;
+            break;
+    }
+}
 
-    // Requête pour lignefraisforfait Forfait Etape.
-    $requete = 'SELECT * 
-                FROM lignefraisforfait 
-                WHERE matricule = \'' . $_SESSION['matricule'] . '\' AND moisAnnee = ' . $datePourRequete . ' AND idfraisforfait = \'RE\'';
+// Requête pour lignefraishorsforfait.
+$stmtFraisHorsForfait = $pdo->prepare('SELECT * FROM lignefraishorsforfait WHERE matricule = :matricule AND moisAnnee = :datePourRequete');
+$stmtFraisHorsForfait->execute(['matricule' => $_SESSION['matricule'], 'datePourRequete' => $datePourRequete]);
+$fraisHorsForfait = $stmtFraisHorsForfait->fetchAll();
 
-    $execution = $pdo->query($requete) or die('La requête a planté !');
-    $forfaitEtape = $execution->fetch();
-
-    // Requête pour lignefraisforfait Frais Kilométrique.
-    $requete = 'SELECT * 
-                FROM lignefraisforfait 
-                WHERE matricule = \'' . $_SESSION['matricule'] . '\' AND moisAnnee = ' . $datePourRequete . ' AND idfraisforfait = \'FK\'';
-
-    $execution = $pdo->query($requete) or die('La requête a planté !');
-    $fraisKilometrique = $execution->fetch();
-
-    // Requête pour lignefraisforfait Nuitée Hôtel.
-    $requete = 'SELECT * 
-                FROM lignefraisforfait 
-                WHERE matricule = \'' . $_SESSION['matricule'] . '\' AND moisAnnee = ' . $datePourRequete . ' AND idfraisforfait = \'NUI\'';
-
-    $execution = $pdo->query($requete) or die('La requête a planté !');
-    $nuiteeHotel = $execution->fetch();
-
-    // Requête pour lignefraisforfait Repas Restaurant.
-    $requete = 'SELECT * 
-                FROM lignefraisforfait 
-                WHERE matricule = \'' . $_SESSION['matricule'] . '\' AND moisAnnee = ' . $datePourRequete . ' AND idfraisforfait = \'REP\'';
-
-    $execution = $pdo->query($requete) or die('La requête a planté !');
-    $repasRestaurant = $execution->fetch();
-
-    // Requête pour lignefraishorsforfait.
-    $requete = 'SELECT * 
-                FROM lignefraishorsforfait 
-                WHERE matricule = \'' . $_SESSION['matricule'] . '\' AND moisAnnee = ' . $datePourRequete;
-
-    $execution = $pdo->query($requete) or die('La requête a planté !');
+// Le traitement ultérieur du résultat de $fraisHorsForfait, si nécessaire.
 
   
 
     if (isset($ligne['idetat'])) {
-        if ($execution->rowCount() > 0) {
+        if (count($fraisHorsForfait) > 0) {
             echo '<div class="col-md-8">
                 <div class="bg-light p-4 mb-4">
                     <h4 class="mb-3">Fiche de frais du mois de ' . $periode . '</h4>
@@ -117,17 +102,17 @@ try {
                     <h4>Descriptif des éléments hors forfait - ' . $ligne['nbjustificatifs'] . ' justificatif reçus </h4>
                     <div class="d-flex flex-column mb-3">';
 
-            while ($donnee = $execution->fetch()) {
-                echo '<div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                        ' . $donnee['dateHF'] . ' - ' . $donnee['libelle'] . ': ' . $donnee['montant'] . '
-                        <form method="post" action="">
-                            <input type="hidden" name="supprimerHorsForfait" value="' . $donnee['id'] . '">
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-times"></i> Supprimer
-                            </button>
-                        </form>
-                    </div>';
-            }
+                    foreach ($fraisHorsForfait as $donnee) {
+                        echo '<div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                                ' . $donnee['dateHF'] . ' - ' . $donnee['libelle'] . ': ' . $donnee['montant'] . '
+                                <form method="post" action="">
+                                    <input type="hidden" name="supprimerHorsForfait" value="' . $donnee['id'] . '">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times"></i> Supprimer
+                                    </button>
+                                </form>
+                              </div>';
+                    }                    
 
             echo '</div>
                 </div>

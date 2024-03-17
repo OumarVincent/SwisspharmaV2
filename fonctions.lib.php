@@ -73,28 +73,67 @@ function setMontantValide($base, $matricule, $moisAnnee) {
     }
 }
 
-function calculateMontantValideForfait($base, $matricule) {
+function getTypeVehicule($base, $matricule) {
+    $requete = "SELECT type_vehicule FROM employe WHERE matricule = :matricule";
+
+    try {
+        $statement = $base->prepare($requete);
+        $statement->bindValue(':matricule', $matricule);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result['type_vehicule'] ?? null;
+    } catch (PDOException $e) {
+        die('Erreur lors de la récupération du type de véhicule : ' . $e->getMessage());
+    }
+}
+
+function getFraisForfaitIdBasedOnVehiculeType($typeVehicule) {
+    // mapping type de véhicule vers idfraisforfait pour que cela correspond aux données de la base (solution temporaire)
+    $mapping = [
+        'Frais Kilométrique 4CV Diesel' => ['FK4D'],
+        '5/6CV Diesel' => ['FK56D'],
+        'Frais Kilométrique 4CV Essence' => ['FK4E'],
+        'Frais Kilométrique 5/6CV Essence' => ['FK56E'],
+    ];
+
+    return $mapping[$typeVehicule] ?? [];
+}
+
+function calculateMontantValideForfait($base, $matricule, $moisAnnee) {
+    // Récupère le type de véhicule de l'employé
+    $typeVehicule = getTypeVehicule($base, $matricule);
+    // Identifie les IDs de frais forfait basés sur le type de véhicule
+    $typeVehiculeFraisForfaitIds = getFraisForfaitIdBasedOnVehiculeType($typeVehicule);
+
+    // Transforme les IDs de frais forfait en chaîne pour la requête SQL
+    // Ajoute une vérification pour inclure tous les frais sauf ceux liés au véhicule si l'employé n'en a pas
+    $idfraisforfaitIn = empty($typeVehicule) ? "'NUI', 'REP', 'RE'" : "'" . implode("','", $typeVehiculeFraisForfaitIds) . "'";
+
     $requete = "SELECT SUM(fraisforfait.montant * lignefraisforfait.quantite) AS montantValideForfait
                 FROM lignefraisforfait
                 JOIN fraisforfait ON lignefraisforfait.idfraisforfait = fraisforfait.id
                 WHERE lignefraisforfait.matricule = :matricule
-                AND lignefraisforfait.moisAnnee = :moisAnnee";
+                AND lignefraisforfait.moisAnnee = :moisAnnee
+                AND (lignefraisforfait.idfraisforfait IN ($idfraisforfaitIn) 
+                     OR lignefraisforfait.idfraisforfait NOT IN ('FK4D', 'FK56D', 'FK4E', 'FK56E'))";
 
     try {
-        echo "Matricule avant la requête: $matricule, MoisAnnée avant la requête: " . date('Ym') . "<br>";
-
         $statement = $base->prepare($requete);
-        $statement->bindValue(':matricule', $matricule, PDO::PARAM_STR);
-        $statement->bindValue(':moisAnnee', date('Ym'), PDO::PARAM_STR);
+        $statement->bindValue(':matricule', $matricule);
+        $statement->bindValue(':moisAnnee', $moisAnnee);
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $result['montantValideForfait'] ?: 0;
+        return $result ? ($result['montantValideForfait'] ?: 0) : 0;
     } catch (PDOException $e) {
         die('Erreur lors de l\'exécution de la requête : ' . $e->getMessage());
     }
 }
+
+
+
 
 
 function calculateMontantValideHorsForfait($base, $matricule) {
@@ -136,6 +175,9 @@ function addHorsClassification($base, $matricule, $nbJustificatifs, $libelle) {
         die('Erreur lors de l\'exécution de la requête : ' . $e->getMessage());
     }
 }
+
+// fonction compatable  : 
+
 
 
 

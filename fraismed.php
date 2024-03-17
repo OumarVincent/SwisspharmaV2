@@ -79,7 +79,21 @@
             addLigneFraisForfait($pdo, 'REP', $repas);
             addLigneFraisForfait($pdo, 'NUI', $nuitees);
             addLigneFraisForfait($pdo, 'RE', $etapes);
-            addLigneFraisForfait($pdo, 'FK', $km);
+            switch(getTypeVehicule($pdo,$_SESSION['matricule'])) {
+                case 'FK4D':
+                    addLigneFraisForfait($pdo, 'FK4D', $km);
+                break;
+                case 'FK4E':
+                    addLigneFraisForfait($pdo, 'FK4E', $km);
+                break;
+                case 'FK56D': 
+                    addLigneFraisForfait($pdo, 'FK56D', $km);
+                break;
+                case 'FK56E':
+                    addLigneFraisForfait($pdo, 'FK56E', $km);
+                break;
+            }
+            
             
             echo '<div class="alert alert-success" role="alert">Les données ont été enregistrées avec succès.</div>';
         } else {

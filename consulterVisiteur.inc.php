@@ -39,7 +39,7 @@ if (isset($ligne['idetat'])) {
 }
 
 // Requête optimisée pour récupérer tous les frais forfaitaires en une seule fois.
-$stmtFraisForfait = $pdo->prepare('SELECT * FROM lignefraisforfait WHERE matricule = :matricule AND moisAnnee = :datePourRequete AND idfraisforfait IN (\'RE\', \'FK\', \'NUI\', \'REP\')');
+$stmtFraisForfait = $pdo->prepare('SELECT * FROM lignefraisforfait WHERE matricule = :matricule AND moisAnnee = :datePourRequete AND idfraisforfait IN (\'RE\', \'NUI\', \'REP\', \'FK4D\', \'FK4E\', \'FK56D\', \'FK56E\')');
 $stmtFraisForfait->execute(['matricule' => $_SESSION['matricule'], 'datePourRequete' => $datePourRequete]);
 $fraisForfaitaires = $stmtFraisForfait->fetchAll();
 
@@ -48,10 +48,13 @@ foreach ($fraisForfaitaires as $frais) {
     switch ($frais['idfraisforfait']) {
         case 'RE':
             $forfaitEtape = $frais;
-            break;
-        case 'FK':
+        break;
+        case 'FK4D':
+        case 'FK4E':
+        case 'FK56D':
+        case 'FK56E':
             $fraisKilometrique = $frais;
-            break;
+        break;
         case 'NUI':
             $nuiteeHotel = $frais;
             break;

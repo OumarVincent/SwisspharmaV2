@@ -9,7 +9,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $password = $_POST['password'];
     $password = $pdo->quote($password);
 
-    $sql = "SELECT nom, prenom, login, mdp, idRole, matricule FROM employe WHERE login=$login AND mdp=$password";
+    $sql = "SELECT * FROM employe WHERE login=$login AND mdp=$password";
     $result = $pdo->query($sql);
     $num = $result->rowCount();
     $row = $result->fetch(PDO::FETCH_ASSOC);

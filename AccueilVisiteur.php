@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head> <!-- head -->
     <meta charset="utf-8">
     <title>Swisspharma | Accueil Visiteur</title>
     <link rel="icon" href="../Ressources/Logo.png"/>

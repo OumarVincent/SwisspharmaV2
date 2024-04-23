@@ -8,6 +8,9 @@
 ![image](https://github.com/OumarVincent/SwisspharmaV2/assets/148212506/23178b9b-3d09-4186-8473-4e8ed6410c6d)
 ![image](https://github.com/OumarVincent/SwisspharmaV2/assets/148212506/62f5e344-5b82-478b-95f3-d44d035feeb2)
 
+## Gêrer les sauvegardes :
+
+![image](https://github.com/OumarVincent/SwisspharmaV2/assets/148212506/cdcb1d1d-3527-4e52-a33a-91daed181783)
 
 
 ## Extrait Sprint 3 :
